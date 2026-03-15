@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - dev
     paths:
       - "docs/design/**"
       - ".github/workflows/docs-pages.yml"
