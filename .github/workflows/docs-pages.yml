@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - dev
     paths:
       - "docs/design/**"
       - ".github/workflows/docs-pages.yml"
@@ -45,7 +44,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: 'pip'
 
       - name: Set up uv
         uses: astral-sh/setup-uv@v5
