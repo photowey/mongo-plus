@@ -72,7 +72,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <reversion>2026.1.0.0-SNAPSHOT</reversion>
+        <reversion>2026.1.0.0</reversion>
 
         <io.github.photowey.project.url>https://github.com/photowey/mongo-plus</io.github.photowey.project.url>
 
