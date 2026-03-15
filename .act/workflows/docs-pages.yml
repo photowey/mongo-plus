@@ -1,0 +1,103 @@
+name: Docs Pages
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+    paths:
+      - "docs/design/**"
+      - ".github/workflows/docs-pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: docs-pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      branch: ${{ steps.meta.outputs.branch }}
+      short_sha: ${{ steps.meta.outputs.short_sha }}
+      artifact_path: ${{ steps.meta.outputs.artifact_path }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Resolve build metadata
+        id: meta
+        run: |
+          echo "branch=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+          echo "short_sha=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+          echo "artifact_path=docs/design/site" >> "$GITHUB_OUTPUT"
+
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: 'pip'
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          cache-dependency-glob: "docs/design/uv.lock"
+
+      - name: Build documentation
+        working-directory: docs/design
+        env:
+          MONGO_PLUS_DOCS_SITE_NAME: Mongo Plus Guide
+          MONGO_PLUS_DOCS_SITE_NAME_ZH: Mongo Plus 使用手册
+          MONGO_PLUS_DOCS_REPO_NAME: photowey/mongo-plus · ${{ steps.meta.outputs.branch }} · ${{ steps.meta.outputs.short_sha }}
+          MONGO_PLUS_DOCS_SITE_URL: ${{ steps.pages.outputs.base_url }}/
+          UV_FROZEN: "true"
+        run: |
+          uv sync --frozen
+          uv run mkdocs build --strict
+
+      - name: Verify Build Output
+        run: |
+          if [ ! -d "${{ steps.meta.outputs.artifact_path }}" ]; then
+            echo "::error::Build output directory '${{ steps.meta.outputs.artifact_path }}' not found. Check mkdocs.yml site_dir setting."
+            exit 1
+          fi
+          ls -la "${{ steps.meta.outputs.artifact_path }}"
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ steps.meta.outputs.artifact_path }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Write workflow summary
+        run: |
+          {
+            echo "## 📚 Docs Pages Deployment"
+            echo
+            echo "| Metric | Value |"
+            echo "| :--- | :--- |"
+            echo "| Branch | \`${{ needs.build.outputs.branch }}\` |"
+            echo "| Commit | \`${{ needs.build.outputs.short_sha }}\` |"
+            echo "| Status | ✅ Success |"
+            echo "| URL | [Visit Site](${{ steps.deployment.outputs.page_url }}) |"
+          } >> "$GITHUB_STEP_SUMMARY"

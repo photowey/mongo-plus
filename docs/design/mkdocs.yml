@@ -1,0 +1,136 @@
+site_name: !ENV [MONGO_PLUS_DOCS_SITE_NAME, "Mongo Plus Guide"]
+site_description: English guide and engineering manual for Mongo Plus
+site_url: !ENV [MONGO_PLUS_DOCS_SITE_URL, "http://127.0.0.1:9527/"]
+site_author: photowey <photowey@gmail.com>
+repo_name: !ENV [MONGO_PLUS_DOCS_REPO_NAME, "photowey/mongo-plus"]
+repo_url: https://github.com/photowey/mongo-plus
+copyright: Copyright &copy; 2026 - present <a href="mailto:photowey@gmail.com">photowey</a>
+
+theme:
+  name: material
+  language: en
+  features:
+    - content.code.copy
+    - content.tooltips
+    - navigation.footer
+    - navigation.indexes
+    - navigation.sections
+    - navigation.tabs
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+    - toc.follow
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: teal
+      accent: deep orange
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: lime
+      toggle:
+        icon: material/toggle-switch-off
+        name: Switch to light mode
+  font:
+    text: Plus Jakarta Sans
+    code: JetBrains Mono
+  logo: assets/logo.svg
+  favicon: assets/logo.svg
+extra_css:
+  - assets/stylesheets/extra.css
+hooks:
+  - hooks/copy_sitemap.py
+plugins:
+  - i18n:
+      docs_structure: suffix
+      fallback_to_default: false
+      reconfigure_material: true
+      reconfigure_search: true
+      languages:
+        - locale: en
+          default: true
+          name: English
+          build: true
+          site_name: !ENV [MONGO_PLUS_DOCS_SITE_NAME, "Mongo Plus Guide"]
+          site_description: English guide and engineering manual for Mongo Plus
+        - locale: zh
+          name: 简体中文
+          build: true
+          site_name: !ENV [MONGO_PLUS_DOCS_SITE_NAME_ZH, "Mongo Plus 使用手册"]
+          site_description: Mongo Plus 使用手册与工程维护说明
+          nav:
+            - 概览: index.md
+            - 接入指南:
+                - 环境与依赖: getting-started.md
+                - 快速开始: quick-start.md
+            - 查询与写入:
+                - Engine 查询入口: engine-guide.md
+                - Wrapper、分页与聚合: wrapper-guide.md
+            - Mapper 与扩展:
+                - Mapper 接口与扫描: mapper-guide.md
+                - 插件与扩展点: plugin-guide.md
+            - 工程使用:
+                - 示例模块: examples-guide.md
+                - 开发、验证与文档维护: development-guide.md
+            - License: license.md
+          admonition_translations:
+            tip: 提示
+          theme:
+            language: zh
+            palette:
+              - media: "(prefers-color-scheme: light)"
+                scheme: default
+                primary: teal
+                accent: deep orange
+                toggle:
+                  icon: material/toggle-switch
+                  name: 切换到深色模式
+              - media: "(prefers-color-scheme: dark)"
+                scheme: slate
+                primary: black
+                accent: lime
+                toggle:
+                  icon: material/toggle-switch-off
+                  name: 切换到浅色模式
+  - search
+  - minify:
+      minify_html: true
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+
+extra:
+  generator: false
+
+nav:
+  - Overview: index.md
+  - Getting Started:
+      - Requirements And Dependencies: getting-started.md
+      - Quick Start: quick-start.md
+  - Querying And Writing:
+      - Engine Query Entry: engine-guide.md
+      - Wrapper, Paging, And Aggregation: wrapper-guide.md
+  - Mapper And Extension:
+      - Mapper Interfaces And Scanning: mapper-guide.md
+      - Plugins And Extension Points: plugin-guide.md
+  - Engineering Guide:
+      - Example Modules: examples-guide.md
+      - Development, Verification, And Docs Maintenance: development-guide.md
+  - License: license.md

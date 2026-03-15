@@ -1,0 +1,2 @@
+io.github.photowey.mongoplus.apt.MongoFieldAnnotationProcessor
+io.github.photowey.mongoplus.apt.AutoMapperAnnotationProcessor

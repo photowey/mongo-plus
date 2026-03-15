@@ -1,0 +1,43 @@
+FROM catthehacker/ubuntu:act-latest
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV JAVA_HOME_11_X64=/usr/lib/jvm/java-11-openjdk-amd64
+ENV JAVA_HOME_17_X64=/usr/lib/jvm/java-17-openjdk-amd64
+ENV JAVA_HOME=${JAVA_HOME_17_X64}
+ENV PATH="${JAVA_HOME}/bin:${PATH}"
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        ca-certificates \
+        curl \
+        git \
+        gnupg \
+        maven \
+        openjdk-11-jdk \
+        openjdk-17-jdk \
+        wget \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN update-alternatives --set java "${JAVA_HOME_17_X64}/bin/java" \
+    && update-alternatives --set javac "${JAVA_HOME_17_X64}/bin/javac" \
+    && java --version \
+    && "${JAVA_HOME_11_X64}/bin/java" --version \
+    && "${JAVA_HOME_17_X64}/bin/java" --version \
+    && mvn --version
+
+RUN useradd -m -s /bin/bash runner
+
+RUN mkdir -p /home/runner/work \
+    && chown -R runner:runner /home/runner
+
+USER runner
+
+WORKDIR /home/runner/work
+
+# 1. Build the image.
+# docker build -f Dockerfile.act -t photowey/ubuntu:act-jdk11-17 .
+#
+# 2. Run the act workflow.
+# act push --action-offline-mode -v \
+#   -W .act/workflows/maven.act.yml \
+#   -P ubuntu-latest=photowey/ubuntu:act-jdk11-17

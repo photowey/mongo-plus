@@ -1,0 +1,90 @@
+name: Java CI with Maven
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+      - feature/**
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+
+    env:
+      MAVEN_REPO_HOME: "/home/runner/.m2"
+      MAVEN_REPO_PATH: "/home/runner/.m2/repository"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 11
+        id: setup-java-11
+        uses: actions/setup-java@v4
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Set up JDK 17
+        id: setup-java-17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Configure Maven toolchains
+        run: |
+          mkdir -p ~/.m2
+          cat <<'EOF' > ~/.m2/toolchains.xml
+          <?xml version="1.0" encoding="UTF-8"?>
+          <toolchains xmlns="http://maven.apache.org/TOOLCHAINS/1.1.0"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://maven.apache.org/TOOLCHAINS/1.1.0 https://maven.apache.org/xsd/toolchains-1.1.0.xsd">
+            <toolchain>
+              <type>jdk</type>
+              <provides>
+                <version>11</version>
+              </provides>
+              <configuration>
+                <jdkHome>${{ steps.setup-java-11.outputs.path }}</jdkHome>
+              </configuration>
+            </toolchain>
+            <toolchain>
+              <type>jdk</type>
+              <provides>
+                <version>17</version>
+              </provides>
+              <configuration>
+                <jdkHome>${{ steps.setup-java-17.outputs.path }}</jdkHome>
+              </configuration>
+            </toolchain>
+          </toolchains>
+          EOF
+
+      - name: Set up Maven environment
+        run: echo "MAVEN_REPO=${MAVEN_REPO_PATH}" >> $GITHUB_ENV
+
+      - name: Configure Maven
+        run: |
+          mkdir -p ~/.m2/repository
+          echo "<settings xmlns=\"http://maven.apache.org/SETTINGS/1.0.0\"
+            xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
+            xsi:schemaLocation=\"http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd\">
+            <localRepository>~/.m2/repository</localRepository>
+          </settings>" > ~/.m2/settings.xml
+
+      - name: Verify reactor
+        run: mvn -B verify
+
+      - name: Validate examples reactor
+        run: mvn -B -Pexamples -DskipTests validate
+
+      - name: Deploy with Maven
+        run: mvn clean -DskipTests source:jar deploy
+
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml

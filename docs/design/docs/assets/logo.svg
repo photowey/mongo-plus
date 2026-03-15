@@ -1,0 +1,110 @@
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 512 512"
+    role="img"
+    aria-labelledby="title desc"
+>
+    <title id="title">Mango Plus</title>
+    <desc id="desc">An Apple-style mango logo with natural color transition, realistic stem, detailed leaf veins, and a bite mark.</desc>
+    <defs>
+        <linearGradient id="mangoGradient" x1="150" y1="180" x2="370" y2="400" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#7cb342" />
+            <stop offset="0.2" stop-color="#fdd835" />
+            <stop offset="0.5" stop-color="#fb8c00" />
+            <stop offset="0.8" stop-color="#e53935" />
+            <stop offset="1" stop-color="#c62828" />
+        </linearGradient>
+
+        <linearGradient id="leafGradient" x1="255" y1="140" x2="320" y2="185" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#81c784" />
+            <stop offset="0.4" stop-color="#4caf50" />
+            <stop offset="1" stop-color="#2e7d32" />
+        </linearGradient>
+
+        <linearGradient id="smallLeafGradient" x1="215" y1="150" x2="250" y2="185" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#a5d6a7" />
+            <stop offset="1" stop-color="#66bb6a" />
+        </linearGradient>
+
+        <linearGradient id="stemGradient" x1="250" y1="130" x2="250" y2="200" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#6d4c41" />
+            <stop offset="0.5" stop-color="#5d4037" />
+            <stop offset="1" stop-color="#3e2723" />
+        </linearGradient>
+
+        <radialGradient id="stemShadow" cx="256" cy="195" r="20" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#000000" stop-opacity="0.3" />
+            <stop offset="1" stop-color="#000000" stop-opacity="0" />
+        </radialGradient>
+
+        <mask id="biteMask">
+            <rect width="512" height="512" fill="white"/>
+            <g fill="black">
+                <circle cx="385" cy="265" r="35" />
+                <circle cx="405" cy="295" r="35" />
+                <circle cx="385" cy="325" r="35" />
+                <circle cx="355" cy="295" r="30" />
+            </g>
+        </mask>
+    </defs>
+
+    <path
+        d="M256 195
+           C180 195 140 250 145 310
+           C150 370 190 415 250 420
+           C310 425 365 380 360 310
+           C355 240 310 195 256 195 Z"
+        fill="url(#mangoGradient)"
+        mask="url(#biteMask)"
+    />
+
+    <ellipse cx="256" cy="195" rx="15" ry="8" fill="url(#stemShadow)" />
+
+    <path
+        d="M250 198
+           C248 190 248 180 252 165
+           C256 150 265 140 285 125
+           L290 128
+           C275 140 265 152 262 168
+           C260 182 262 192 264 198
+           Z"
+        fill="url(#stemGradient)"
+    />
+
+    <path d="M255 185 Q257 170 260 155" fill="none" stroke="#ffffff" stroke-width="0.5" opacity="0.2" />
+    <path d="M258 190 Q260 175 263 160" fill="none" stroke="#000000" stroke-width="0.5" opacity="0.2" />
+
+    <path
+        d="M265 160
+           C280 140 310 120 340 115
+           C370 110 395 125 405 150
+           C415 175 390 200 360 210
+           C320 225 280 205 265 175 Z"
+        fill="url(#leafGradient)"
+    />
+
+    <g opacity="0.4" stroke="#1b5e20" stroke-width="1.2" fill="none" stroke-linecap="round">
+        <path d="M268 172 C300 155 350 145 395 155" stroke-width="2" />
+        <path d="M290 158 C295 140 310 130 325 122" />
+        <path d="M320 150 C330 135 345 125 365 120" />
+        <path d="M350 148 C365 135 380 130 395 135" />
+        <path d="M295 165 C310 185 330 195 355 205" />
+        <path d="M330 155 C350 175 370 185 390 190" />
+    </g>
+
+    <path
+        d="M250 180
+           C240 165 220 150 200 145
+           C180 140 160 155 155 175
+           C150 195 170 210 200 215
+           C230 220 255 200 260 185 Z"
+        fill="url(#smallLeafGradient)"
+    />
+
+    <g opacity="0.3" stroke="#1b5e20" stroke-width="1" fill="none" stroke-linecap="round">
+        <path d="M255 188 C225 180 190 170 165 175" stroke-width="1.5" />
+        <path d="M230 182 C225 165 215 155 200 150" />
+        <path d="M210 178 C200 160 185 155 170 158" />
+        <path d="M225 185 C215 200 200 208 180 210" />
+    </g>
+</svg>

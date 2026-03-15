@@ -1,0 +1,53 @@
+/*
+ * Copyright (c) 2026-present The MongoPlus Authors. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.github.photowey.mongoplus.autoconfigure.core.proxy.handler;
+
+import java.lang.reflect.Method;
+
+import io.github.photowey.mongoplus.executor.getter.ExecutorGetter;
+import io.github.photowey.mongoplus.plugin.strategy.StrategySupporter;
+
+/**
+ * MethodHandler - Handler for mapper method invocation.
+ *
+ * @author photowey
+ * @version 2026.1.0.0
+ * @since 2026/03/12
+ */
+@FunctionalInterface
+public interface MethodHandler extends StrategySupporter<Method> {
+
+    /**
+     * Check if this handler supports the given method.
+     *
+     * @param method the method to check
+     * @return true if supported
+     */
+    @Override
+    default boolean supports(Method method) {
+        return true;
+    }
+
+    /**
+     * Execute the method.
+     *
+     * @param getter      the Mongo(template) executor getter
+     * @param entityClass the entity class
+     * @param args        the method arguments
+     * @return the result
+     */
+    Object execute(ExecutorGetter getter, Class<?> entityClass, Object[] args);
+}

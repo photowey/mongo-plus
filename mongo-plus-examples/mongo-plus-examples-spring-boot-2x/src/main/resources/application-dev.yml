@@ -1,0 +1,12 @@
+server:
+  port: 9527
+
+# OrderMapper + ProductMapper: scanned only by propertyMongoMapperScanConfigurer (not by @MongoMapperScan).
+# - OrderMapper: configmapper package → tests config base-packages.
+# - ProductMapper: annotated package with @MongoMapper → tests that configurer respects annotation.
+spring:
+  data:
+    mongodb:
+      mongoplus:
+        mapper:
+          base-packages: io.github.photowey.mongoplus.examples.spring.boot.b2x.configmapper,io.github.photowey.mongoplus.examples.spring.boot.b2x.annotated

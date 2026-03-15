@@ -1,0 +1,8 @@
+# Test profile: ensure mapper scan base-packages for integration tests (manual and generated mappers)
+spring:
+  data:
+    mongodb:
+      mongoplus:
+        enabled: true
+        mapper:
+          base-packages: io.github.photowey.mongoplus.examples.spring.boot.b3x.mapper,io.github.photowey.mongoplus.examples.spring.boot.b3x.configmapper,io.github.photowey.mongoplus.examples.spring.boot.b3x.annotated,io.github.photowey.mongoplus.examples.spring.boot.b3x.core.domain.document

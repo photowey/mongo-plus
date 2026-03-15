@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+>
+    <url>
+        <loc>https://github.com/photowey/mongo-plus/zh/</loc>
+    </url>
+    <url>
+        <loc>https://github.com/photowey/mongo-plus/zh/getting-started/</loc>
+    </url>
+    <url>
+        <loc>https://github.com/photowey/mongo-plus/zh/quick-start/</loc>
+    </url>
+    <url>
+        <loc>https://github.com/photowey/mongo-plus/zh/engine-guide/</loc>
+    </url>
+    <url>
+        <loc>https://github.com/photowey/mongo-plus/zh/wrapper-guide/</loc>
+    </url>
+    <url>
+        <loc>https://github.com/photowey/mongo-plus/zh/mapper-guide/</loc>
+    </url>
+    <url>
+        <loc>https://github.com/photowey/mongo-plus/zh/plugin-guide/</loc>
+    </url>
+    <url>
+        <loc>https://github.com/photowey/mongo-plus/zh/examples-guide/</loc>
+    </url>
+    <url>
+        <loc>https://github.com/photowey/mongo-plus/zh/development-guide/</loc>
+    </url>
+    <url>
+        <loc>https://github.com/photowey/mongo-plus/zh/license/</loc>
+    </url>
+</urlset>

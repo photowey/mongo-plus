@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE suppressions PUBLIC
+    "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+    "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+
+<suppressions>
+    <suppress files="[\\/].*(package-info)\.java" checks="RegexpOnFilename"/>
+    <suppress files="[\\/].*(module-info)\.java" checks="RegexpOnFilename"/>
+
+    <suppress files=".*[\\/]enums([\\/])?.*" checks="NoWhitespaceBefore"/>
+    <suppress files=".*[\\/]constant([\\/])?.*" checks="InterfaceIsType"/>
+
+    <suppress files=".*[\\/]wrapper([\\/])?.*" checks="SuperClone"/>
+    <suppress files=".*[\\/]injector[\\/]method([\\/])?.*" checks="SuperClone"/>
+
+    <suppress files=".*[\\/]mapper[\\/]util([\\/])?.*" checks="RegexpOnFilename"/>
+
+    <suppress files=".*[\\/]apt([\\/])?.*" checks="ParameterNumber"/>
+
+    <suppress files=".*[\\/]query[\\/]builder([\\/])?.*" checks="RegexpOnFilename"/>
+    <suppress files=".*[\\/]query[\\/]compiler([\\/])?.*" checks="RegexpOnFilename"/>
+
+    <suppress files=".*[\\/]test([\\/])?.*" checks="LineLength"/>
+    <suppress files=".*[\\/]test([\\/])?.*" checks="MethodLength"/>
+    <suppress files=".*[\\/]test([\\/])?.*" checks="VariableDeclarationUsageDistance"/>
+</suppressions>
+

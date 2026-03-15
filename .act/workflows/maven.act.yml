@@ -1,0 +1,100 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Java CI with Maven | JDK 11 + 17 | act
+
+on:
+  push:
+    branches: [ "main", "dev", "feature/wcj" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+
+    env:
+      ACT: true
+      CI_SPRING_DATASOURCE_ACCESS_ENABLED: false
+      MAVEN_REPO_PATH: /home/runner/.m2/repository
+      MAVEN_SETTINGS_PATH: /home/runner/.m2/settings.xml
+      MAVEN_TOOLCHAINS_PATH: /home/runner/.m2/toolchains.xml
+      JAVA_HOME_11_X64: /usr/lib/jvm/java-11-openjdk-amd64
+      JAVA_HOME_17_X64: /usr/lib/jvm/java-17-openjdk-amd64
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select JDK 17 as the default runtime
+        run: |
+          echo "JAVA_HOME=${JAVA_HOME_17_X64}" >> "$GITHUB_ENV"
+          echo "${JAVA_HOME_17_X64}/bin" >> "$GITHUB_PATH"
+
+      - name: Verify installed JDKs and Maven
+        run: |
+          test -x "${JAVA_HOME_11_X64}/bin/java"
+          test -x "${JAVA_HOME_17_X64}/bin/java"
+          "${JAVA_HOME_11_X64}/bin/java" --version
+          "${JAVA_HOME_17_X64}/bin/java" --version
+          java --version
+          mvn --version
+
+      - name: Configure Maven settings and toolchains
+        run: |
+          mkdir -p "${MAVEN_REPO_PATH}" /home/runner/.m2
+          echo "MAVEN_REPO=${MAVEN_REPO_PATH}" >> "$GITHUB_ENV"
+          cat <<EOF > "${MAVEN_SETTINGS_PATH}"
+          <?xml version="1.0" encoding="UTF-8"?>
+          <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
+            <localRepository>${MAVEN_REPO_PATH}</localRepository>
+            <mirrors>
+              <mirror>
+                <id>aliyunmaven</id>
+                <mirrorOf>central</mirrorOf>
+                <name>Aliyun Maven</name>
+                <url>https://maven.aliyun.com/repository/central</url>
+              </mirror>
+            </mirrors>
+          </settings>
+          EOF
+          cat <<EOF > "${MAVEN_TOOLCHAINS_PATH}"
+          <?xml version="1.0" encoding="UTF-8"?>
+          <toolchains xmlns="http://maven.apache.org/TOOLCHAINS/1.1.0"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://maven.apache.org/TOOLCHAINS/1.1.0 https://maven.apache.org/xsd/toolchains-1.1.0.xsd">
+            <toolchain>
+              <type>jdk</type>
+              <provides>
+                <version>11</version>
+              </provides>
+              <configuration>
+                <jdkHome>${JAVA_HOME_11_X64}</jdkHome>
+              </configuration>
+            </toolchain>
+            <toolchain>
+              <type>jdk</type>
+              <provides>
+                <version>17</version>
+              </provides>
+              <configuration>
+                <jdkHome>${JAVA_HOME_17_X64}</jdkHome>
+              </configuration>
+            </toolchain>
+          </toolchains>
+          EOF
+
+      - name: Verify reactor
+        run: mvn -B -ntp verify
+
+      - name: Validate examples reactor
+        run: mvn -B -ntp -Pexamples -DskipTests validate
+
+      - name: Deploy with Maven to the local repository
+        run: mvn -B -ntp clean -DskipTests source:jar deploy

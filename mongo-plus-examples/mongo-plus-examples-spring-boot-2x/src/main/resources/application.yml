@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: "boot-2x"
+  profiles:
+    active: dev
+logging:
+  level:
+    "org.springframework.data.mongodb": DEBUG
